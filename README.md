@@ -16,3 +16,13 @@ AI-Powered Predictive Analysis 🤖: Forecasting yield based on weather patterns
 Mobile App Integration 📱: Control and monitor data via a smartphone.
 Expansion of Sensors 🌦️: Include pH, wind speed, and rainfall sensors.
 Autonomous Navigation 🚜: Upgrade to a self-driving agricultural robot.
+
+![WhatsApp Image 2025-03-08 at 4 29 16 PM (1)](https://github.com/user-attachments/assets/192fcb88-c888-455e-8baa-24d7a2658d67)
+
+![WhatsApp Image 2025-03-08 at 4 29 16 PM](https://github.com/user-attachments/assets/b3d03ebb-6392-4a67-81d4-d823c36bc7e1)
+
+
+![WhatsApp Image 2025-03-08 at 4 29 15 PM](https://github.com/user-attachments/assets/9263993d-0658-42e7-b2d0-32b1a707857f)
+
+
+
