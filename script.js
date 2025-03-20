@@ -321,3 +321,13 @@ async function connectToBluetooth() {
         document.getElementById('dataDisplay').innerText = 'Failed to connect to sensor: ' + error.message;
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function() {
+            logoutUser();
+        });
+    }
+});

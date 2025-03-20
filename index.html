@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krishi Mitra</title>
+    <title>Krishi-Mitra</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="auth.js"></script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Krishi-Mitra <i class="fa-solid fa-tractor"></i></h1>
+    <div class="header">
+        <h1>Krishi Mitra <i class="fa-solid fa-tractor"></i></h1>
+        <div class="user-info">
+            Welcome, <span id="userName">Farmer</span>
+            <button id="logoutButton" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
+    </div>
 
         <p id="lastUpdated" class="last-updated">Last updated: Loading...</p>
 

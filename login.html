@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krishi Mitra - Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #2e7d32;
+            font-size: 32px;
+        }
+
+        .header i {
+            margin-left: 10px;
+            color: #2e7d32;
+        }
+
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            background: #e8f5e9;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .tab:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .tab:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .tab.active {
+            background: #2e7d32;
+            color: white;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-form {
+            display: none;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .input-group.half {
+            width: 48%;
+            display: inline-block;
+        }
+
+        .input-group.half:nth-child(odd) {
+            margin-right: 3%;
+        }
+
+        button {
+            background: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        button:hover {
+            background: #1b5e20;
+            transform: scale(1.05);
+        }
+
+        .form-footer {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .form-footer a {
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .validation-message {
+            color: #f44336;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 15px;
+            }
+
+            .input-group.half {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Krishi Mitra <i class="fa-solid fa-tractor"></i></h1>
+        </div>
+
+        <div class="auth-container">
+            <div class="tabs">
+                <div class="tab active" id="loginTab">Login</div>
+                <div class="tab" id="registerTab">Register</div>
+            </div>
+
+            <div class="form-container">
+                
+                <form class="auth-form active" id="loginForm">
+                    <div class="input-group">
+                        <label for="loginMobile"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+                        <input type="tel" id="loginMobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                        <small class="validation-message" id="loginMobileValidation">Please enter a valid 10-digit mobile number</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPassword"><i class="fas fa-lock"></i> Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit"><i class="fas fa-sign-in-alt"></i> Login</button>
+                    <div class="form-footer">
+                        <p>Don't have an account? <a href="#" id="switchToRegister">Register Now</a></p>
+                        <p><a href="#">Forgot Password?</a></p>
+                    </div>
+                </form>
+
+                
+                <form class="auth-form" id="registerForm">
+                    <div class="input-group">
+                        <label for="regName"><i class="fas fa-user"></i> Full Name</label>
+                        <input type="text" id="regName" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="regMobile"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+                        <input type="tel" id="regMobile" placeholder="Enter 10-digit mobile number" pattern="[0-9]{10}" required>
+                        <small class="validation-message" id="regMobileValidation">Please enter a valid 10-digit mobile number</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="regAadhaar"><i class="fas fa-id-card"></i> Aadhaar Number</label>
+                        <input type="text" id="regAadhaar" placeholder="Enter 12-digit Aadhaar number" pattern="[0-9]{12}" required>
+                        <small class="validation-message" id="regAadhaarValidation">Please enter a valid 12-digit Aadhaar number</small>
+                    </div>
+                    <div class="input-group">
+                        <label for="regPassword"><i class="fas fa-lock"></i> Create Password</label>
+                        <input type="password" id="regPassword" placeholder="Create a strong password" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="regConfirmPassword"><i class="fas fa-lock"></i> Confirm Password</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                        <small class="validation-message" id="regPasswordValidation">Passwords do not match</small>
+                    </div>
+                    <button type="submit"><i class="fas fa-user-plus"></i> Register</button>
+                    <div class="form-footer">
+                        <p>Already have an account? <a href="#" id="switchToLogin">Login</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const switchToRegister = document.getElementById('switchToRegister');
+            const switchToLogin = document.getElementById('switchToLogin');
+
+            loginTab.addEventListener('click', () => {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            });
+
+            registerTab.addEventListener('click', () => {
+                registerTab.classList.add('active');
+                loginTab.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            });
+
+            switchToRegister.addEventListener('click', (e) => {
+                e.preventDefault();
+                registerTab.click();
+            });
+
+            switchToLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                loginTab.click();
+            });
+
+           
+            const loginMobile = document.getElementById('loginMobile');
+            const loginMobileValidation = document.getElementById('loginMobileValidation');
+            const regMobile = document.getElementById('regMobile');
+            const regMobileValidation = document.getElementById('regMobileValidation');
+            const regAadhaar = document.getElementById('regAadhaar');
+            const regAadhaarValidation = document.getElementById('regAadhaarValidation');
+            const regPassword = document.getElementById('regPassword');
+            const regConfirmPassword = document.getElementById('regConfirmPassword');
+            const regPasswordValidation = document.getElementById('regPasswordValidation');
+
+            loginMobile.addEventListener('input', validateLoginMobile);
+            regMobile.addEventListener('input', validateRegMobile);
+            regAadhaar.addEventListener('input', validateAadhaar);
+            regConfirmPassword.addEventListener('input', validatePassword);
+
+            function validateLoginMobile() {
+                const mobilePattern = /^[0-9]{10}$/;
+                if (!mobilePattern.test(loginMobile.value)) {
+                    loginMobileValidation.style.display = 'block';
+                    return false;
+                } else {
+                    loginMobileValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            function validateRegMobile() {
+                const mobilePattern = /^[0-9]{10}$/;
+                if (!mobilePattern.test(regMobile.value)) {
+                    regMobileValidation.style.display = 'block';
+                    return false;
+                } else {
+                    regMobileValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            function validateAadhaar() {
+                const aadhaarPattern = /^[0-9]{12}$/;
+                if (!aadhaarPattern.test(regAadhaar.value)) {
+                    regAadhaarValidation.style.display = 'block';
+                    return false;
+                } else {
+                    regAadhaarValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            function validatePassword() {
+                if (regPassword.value !== regConfirmPassword.value) {
+                    regPasswordValidation.style.display = 'block';
+                    return false;
+                } else {
+                    regPasswordValidation.style.display = 'none';
+                    return true;
+                }
+            }
+
+            
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (validateLoginMobile()) {
+                    alert('Login successful! Redirecting to dashboard...');
+                    window.location.href = 'index.html';
+                }
+            });
+
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                if (validateRegMobile() && validateAadhaar() && validatePassword()) {
+                    alert('Registration successful! You can now login with your credentials.');
+                    loginTab.click();
+                }
+            });
+        });
+loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (validateLoginMobile()) {
+        localStorage.setItem('krishiMitraLoggedIn', 'true');
+        localStorage.setItem('krishiMitraMobile', loginMobile.value);
+        window.location.href = 'index.html';
+    }
+});
+
+registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (validateRegMobile() && validateAadhaar() && validatePassword()) {
+        localStorage.setItem('krishiMitraUserName', regName.value);
+        localStorage.setItem('krishiMitraMobile', regMobile.value);
+        localStorage.setItem('krishiMitraAadhaar', regAadhaar.value);
+        alert('Registration successful! You can now login with your credentials.');
+        
+        loginTab.click();
+        
+        loginMobile.value = regMobile.value;
+    }
+});
+    </script>
+</body>
+</html>
