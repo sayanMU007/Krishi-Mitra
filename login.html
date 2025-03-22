@@ -340,11 +340,68 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             
-            loginForm.addEventListener('submit', (e) => {
+     // In login.html, replace the login form submission handler with this:
+
+loginForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if (validateLoginMobile()) {
+        const mobile = loginMobile.value;
+        const password = loginPassword.value;
+        
+        // Get registered users from localStorage
+        const registeredUsers = JSON.parse(localStorage.getItem('krishiMitraUsers')) || [];
+        
+        // Find user with matching mobile number
+        const user = registeredUsers.find(user => user.mobile === mobile);
+        
+        if (user && user.password === password) {
+            // Successful login
+            localStorage.setItem('krishiMitraLoggedIn', 'true');
+            localStorage.setItem('krishiMitraMobile', user.mobile);
+            localStorage.setItem('krishiMitraUserName', user.name);
+            localStorage.setItem('krishiMitraAadhaar', user.aadhaar);
+            window.location.href = 'index.html';
+        } else {
+            // Failed login
+            alert('Invalid mobile number or password. Please try again or register if you don\'t have an account.');
+        }
+    }
+});
+
+// And modify the registration form submission handler:
+
+registerForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (validateRegMobile() && validateAadhaar() && validatePassword()) {
+        const newUser = {
+            name: regName.value,
+            mobile: regMobile.value,
+            aadhaar: regAadhaar.value,
+            password: regPassword.value
+        };
+        
+        // Get existing users or initialize empty array
+        const registeredUsers = JSON.parse(localStorage.getItem('krishiMitraUsers')) || [];
+        
+        // Check if user with this mobile already exists
+        const existingUser = registeredUsers.find(user => user.mobile === newUser.mobile);
+        if (existingUser) {
+            alert('A user with this mobile number already exists. Please login instead.');
+            loginTab.click();
+            return;
+        }
+        
+        // Add new user and save to localStorage
+        registeredUsers.push(newUser);
+        localStorage.setItem('krishiMitraUsers', JSON.stringify(registeredUsers));
+        
+        // Set user as logged in
         localStorage.setItem('krishiMitraLoggedIn', 'true');
-        localStorage.setItem('krishiMitraMobile', loginMobile.value);
+        localStorage.setItem('krishiMitraUserName', newUser.name);
+        localStorage.setItem('krishiMitraMobile', newUser.mobile);
+        localStorage.setItem('krishiMitraAadhaar', newUser.aadhaar);
+        
+        alert('Registration successful! Redirecting to dashboard...');
         window.location.href = 'index.html';
     }
 });
