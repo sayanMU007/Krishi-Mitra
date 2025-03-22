@@ -1,3 +1,37 @@
+// Add this script to the beginning of script.js or add it directly to index.html inside a <script> tag at the top
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user is logged in
+    const isLoggedIn = localStorage.getItem('krishiMitraLoggedIn');
+    
+    // If not logged in, redirect to login page
+    if (!isLoggedIn) {
+        window.location.href = 'login.html';
+        return; // Stop further execution
+    }
+    
+    // If logged in, display the user's name
+    const userName = localStorage.getItem('krishiMitraUserName');
+    if (userName) {
+        document.getElementById('userName').textContent = userName;
+    }
+    
+    // Set up logout button functionality
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function() {
+            logoutUser();
+        });
+    }
+    
+    // Initialize the rest of the dashboard
+    updateSensorDisplays();
+    updateRecommendations();
+    
+    document.getElementById('connectButton').addEventListener('click', connectToBluetooth);
+    document.getElementById('updateButton').addEventListener('click', handleUserInput);
+});
+
+
 // Initialize sensor data object
 let sensorData = {
     temperature: 25,

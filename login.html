@@ -239,6 +239,15 @@
     </div>
 
     <script>
+
+               // Add at beginning of script section in login.html
+// Check if user is already logged in
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage.getItem('krishiMitraLoggedIn') === 'true') {
+        window.location.href = 'index.html';
+    }
+});
+
         document.addEventListener('DOMContentLoaded', () => {
             const loginTab = document.getElementById('loginTab');
             const registerTab = document.getElementById('registerTab');
@@ -332,12 +341,13 @@
 
             
             loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                if (validateLoginMobile()) {
-                    alert('Login successful! Redirecting to dashboard...');
-                    window.location.href = 'index.html';
-                }
-            });
+    e.preventDefault();
+    if (validateLoginMobile()) {
+        localStorage.setItem('krishiMitraLoggedIn', 'true');
+        localStorage.setItem('krishiMitraMobile', loginMobile.value);
+        window.location.href = 'index.html';
+    }
+});
 
             registerForm.addEventListener('submit', (e) => {
                 e.preventDefault();
@@ -362,11 +372,10 @@ registerForm.addEventListener('submit', (e) => {
         localStorage.setItem('krishiMitraUserName', regName.value);
         localStorage.setItem('krishiMitraMobile', regMobile.value);
         localStorage.setItem('krishiMitraAadhaar', regAadhaar.value);
-        alert('Registration successful! You can now login with your credentials.');
+        localStorage.setItem('krishiMitraLoggedIn', 'true');
         
-        loginTab.click();
-        
-        loginMobile.value = regMobile.value;
+        alert('Registration successful! Redirecting to dashboard...');
+        window.location.href = 'index.html';
     }
 });
     </script>
